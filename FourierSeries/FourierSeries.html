@@ -104,14 +104,16 @@
                 <div class='button' id='TermSecondBtn' type='1' curveNum='2'> Second Term (n = 2)   </div>
                 <div class='button' id='TermThirdBtn'  type='1' curveNum='3'> Third Term (n = 3)    </div>
                 <div class='button' id='TermFourthBtn' type='1' curveNum='4'> Fourth Term (n = 4)   </div>
-                <div class='button' id='TermFifthBtn'  type='1' curveNum='5'> Fifth Term (n = 5)    </div>
 
                 <div style='height:5px'> </div>
 
-                <div class='button' id='ApproxFirst5Btn'  type='2' curveNum='0'> Sum of first 5 Terms  </div>
-                <div class='button' id='ApproxFirst10Btn' type='2' curveNum='1'> Sum of first 10 Terms </div>
-                <div class='button' id='ApproxFirst15Btn' type='2' curveNum='2'> Sum of first 15 Terms </div>
-                <div class='button' id='ApproxFirst20Btn' type='2' curveNum='3'> Sum of first 20 Terms </div>
+                <div class='button' id='ApproxFirst1Btn'  type='2' curveNum='0'> Sum of first Term     </div>
+                <div class='button' id='ApproxFirst2Btn'  type='2' curveNum='1'> Sum of first 2 Terms  </div>
+                <div class='button' id='ApproxFirst3Btn'  type='2' curveNum='2'> Sum of first 3 Terms  </div>
+                <div class='button' id='ApproxFirst4Btn'  type='2' curveNum='3'> Sum of first 4 Terms  </div>
+                <div class='button' id='ApproxFirst5Btn'  type='2' curveNum='4'> Sum of first 5 Terms  </div>
+                <div class='button' id='ApproxFirst10Btn' type='2' curveNum='5'> Sum of first 10 Terms </div>
+                <div class='button' id='ApproxFirst20Btn' type='2' curveNum='6'> Sum of first 20 Terms </div>
    
             </div>
 
@@ -195,17 +197,17 @@
             //                        [ '#6699cc', '#3e85cc', '#1570cc', '#005ab3' ] ];
 
             var ColourList = [ [ '#330033' ],
-                               [ '#e600e6', '#b823d2', '#8a47be', '#5b6bab', '#2d8f97', '#00b384' ],
-                               [ '#00e6e6', '#00ade6', '#0073e6', '#003ae6' ] ];
+                               [ '#e600e6', '#ec00ac', '#f20073', '#f80039', '#ff0000' ],
+                               [ '#00e6e6', '#18bfdd', '#3099d5', '#4873cc', '#604cc4', '#7826bb', '#9100b3' ] ];
 
             var ColourHoverList = [ [ '#590059' ],
-                                    [ '#c000c0', '#971dac', '#6e3998', '#475385', '#226b71', '#008d68' ],
-                                    [ '#00c0c0', '#0090c0', '#0060c0', '#0030c0' ] ];
+                                    [ '#c000c0', '#c60090', '#cc0061', '#d20030', '#d90000' ],
+                                    [ '#00c0c0', '#149eb7', '#277daf', '#3b5da6', '#4d3d9e', '#5f1e95', '#72008d' ] ];
 
 
-            var SelectedList = [ [ true ],                                       // orginal
-                                 [ false, false, false, false, false, false ],   // terms
-                                 [ false, false, false, false ] ];               // sums
+            var SelectedList = [ [ true ],                                                // orginal
+                                 [ false, false, false, false, false ],                   // terms
+                                 [ false, false, false, false, false, false, false ] ];   // sums
 
 
             // Init UI
@@ -232,7 +234,7 @@
 
             var lineApprox = [];
 
-            for (var i = 0; i < 6; i++)
+            for (var i = 0; i < 5; i++)
             {
                 var terms = [];
                 terms.push (i);
@@ -254,17 +256,20 @@
                    .style ('stroke', ColourList[1][i]);
             }
             
-
+  
             var updateDuration = 250;
 
-            var sumTerms = [ [ 0, 1, 2, 3, 4, 5 ],
+            var sumTerms = [ [ 0, 1 ],
+                             [ 0, 1, 2 ],
+                             [ 0, 1, 2, 3 ],
+                             [ 0, 1, 2, 3, 4 ],
+                             [ 0, 1, 2, 3, 4, 5 ],
                              [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
-                             [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ], 
                              [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ] ];
 
             var lineSumFunc = [];
 
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < sumTerms.length; i++)
             {
                 var approxSumFunc = ComputeApprox (sumTerms[i]);
 
@@ -285,7 +290,7 @@
 
             d3.selectAll ('.button').on ('click', function ()
             {
-                console.log ('On button CB');
+                //console.log ('On button CB');
 
                 var selectedType     = +d3.select(this).node().getAttribute ('type');
                 var selectedCurveNum = +d3.select(this).node().getAttribute ('curveNum');
