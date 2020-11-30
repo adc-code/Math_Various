@@ -1,0 +1,273 @@
+\documentclass[letterpaper,8pt]{article}
+
+\usepackage[letterpaper,margin=0.5in]{geometry}
+
+\usepackage{nicefrac}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+\usepackage{pst-node}
+\usepackage{pst-circ}
+\usepackage{multido}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath,mathtools,nicefrac}
+\usepackage{soul}
+\usepackage{psvectorian}
+
+
+%\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\usepackage{mathpazo}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2.5ex}
+\usepackage{setspace}
+\usepackage[superscript,biblabel]{cite}
+
+% disables chapter, section and subsection numbering
+\setcounter{secnumdepth}{-1} 
+
+\newcommand{\Thev}{Th\'{e}venin}
+
+\DeclareFontFamily{U}{wncy}{}
+\DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+\DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+\DeclareMathSymbol{\Sh}{\mathord}{mcy}{"58} 
+
+
+
+
+
+\begin{document}
+
+
+\fbox{\parbox{\linewidth}{\em \LARGE \centering  Fourier Series }}
+
+Recall the Fourier series formula:
+\[
+f(x) = a_0 + \sum_{n = 1}^\infty \left( a_n \cos nx + b_n \sin nx \right)
+\]
+Where the Fourier coefficients $a_0$, $a_n$ and $b_n$ are defined by:
+\[
+a_0 = \frac{1}{2L} \int_{-L}^L f(x) dx  \qquad
+a_n = \frac{1}{L}  \int_{-L}^L f(x) \cos \left( \frac{n\pi x}{L} \right) dx \qquad
+b_n = \frac{1}{L}  \int_{-L}^L f(x) \sin \left( \frac{n\pi x}{L} \right) dx 
+\]
+Note, $L$ is half the period of the function and $n$ is a positive integer.  Also note that $a_0$ is the average value of the $f(x)$.
+
+
+\fbox{\em \Large Square Wave}
+
+The square wave function can be defined over the interval $[0, 2)$ as:
+\[
+\mathsf{Square\ Wave}(x) = \left\{ 
+      \begin{array}{ll} 1, & 0 \leq x < 1 \\ 
+                       -1, & 1 \leq x < 2 \end{array} \right.
+\]
+
+First we can determine $a_0$.  By inspection we can expect it to be zero, but we shall still 
+figure it out for practice.  Note that $L = 1$ and we are considering the interval $[0, 2)$ instead
+of $[-1, 1)$ since the function is periodic:
+\begin{align*}
+a_0 &= \frac{1}{2L} \int_{-L}^L f(x) dx  \\
+    &= \frac{1}{2(1)} \int_{0}^{2} \mathsf{Square\ Wave}(x) dx \\
+    &= \frac{1}{2} \left[ \int_0^1 (1) dx + \int_1^2 (-1) dx \right] = \frac{1}{2} \left[ \left. \vphantom{\frac{1}{2}} x\right|^1_0 - \left. \vphantom{\frac{1}{2}} x\right|^2_1 \right] \\
+    &= \frac{1}{2} \left[ \vphantom{\frac{1}{2}} 1 - 0 - (2 - 1) \right] \\
+    &= 0
+\end{align*}
+
+Next we shall look at $a_n$.  Again by inspection we can argue that since the function is odd that it
+cosine components since those are even.  Anyways... we shall still work it out for practice.
+\begin{align*}
+a_n &= \frac{1}{L}  \int_{-L}^L f(x) \cos \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_{0}^{2} \mathsf{Square\ Wave}(x)\cos \left( \frac{n\pi x}{1} \right) dx \\ 
+    &= \int_0^1 (1) \cos \left( n\pi x \right) dx + \int_1^2 (-1) \cos \left( n\pi x \right) dx \\
+    &= \left. \frac{1}{n \pi} \sin \left( n\pi x \right)\right|^1_0 -  \left. \frac{1}{n \pi} \sin \left( n\pi x \right)\right|^2_1 \\
+    &= \frac{1}{n \pi} \left( \vphantom{\frac{1}{2}} \sin ( n\pi) - \sin(0) \right) - \frac{1}{n \pi} \left( \vphantom{\frac{1}{2}} \sin (2n\pi) - \sin(n\pi) \right) \\
+\intertext{Since $\sin(0) = 0$, $\sin ( n\pi) = 0$, and $\sin (2n\pi) = 0$ for all positive integer values of $n$, then}
+a_n &= 0
+\end{align*}
+
+Now working out $b_n$...
+\begin{align*}
+b_n &= \frac{1}{L} \int_{-L}^L f(x) \sin \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_0^2 \mathsf{Square\ Wave}(x) \sin \left( \frac{n\pi x}{1} \right) dx \\
+    &= \int_0^1 (1) \sin \left( n\pi x \right) + \int_1^2 (-1) \sin \left( n\pi x \right) dx \\
+    &= \left. -\frac{1}{n \pi} \cos \left( n\pi x \right)\right|^1_0 + \left. \frac{1}{n \pi} \cos \left( n\pi x \right)\right|^2_1 \\
+    &= -\frac{1}{n \pi} \left( \vphantom{\frac{1}{2}} \cos ( n\pi ) - \cos ( 0 ) \right) + \frac{1}{n \pi} \left( \vphantom{\frac{1}{2}} \cos(2n\pi) - \cos(n\pi) \right) \\ 
+    &= \frac{1}{n \pi} \left( \vphantom{\frac{1}{2}} 1 - \cos(n\pi) - \cos(n\pi) + 1\right) \\
+\intertext{Note $\cos(n\pi) = -1, 1, -1, 1, \ldots$\ which can be writen as $(-1)^n$, so then: }
+b_n &= \frac{2}{n \pi} \left( \vphantom{\frac{1}{2}} 1 - (-1)^n \right) \\
+    &= \frac{2}{n \pi} \left\{ \vphantom{\frac{1}{2}} 2, 0, 2, 0, \ldots \right\} \\
+    &= \frac{4}{n \pi} \left\{ \vphantom{\frac{1}{2}} 1, 0, 1, 0, \ldots \right\} \\
+\intertext{Therefore $b_n = 1$ for odd values of $n$ and $b_n = 0$ for even values of $n$.  To `select' just the odd numbers, we can use $2n - 1$.  So then we have:} 
+b_n &= \frac{4}{(2n - 1)\pi} 
+\end{align*}
+
+And the final Fourier series is:
+\[
+f(x) = \frac{4}{\pi} \sum^\infty_{n = 1} \frac{1}{2n - 1} \sin \left( (2n - 1) \pi \vphantom{\frac{1}{2}} x \right)
+\]
+
+\fbox{\em \Large Sawtooth Wave}
+
+The square wave function can be defined over the interval $[0, 2)$ as:
+\[
+\mathsf{Sawtooth\ Wave}(x) = \frac{1}{2} x 
+\]
+
+First we shall find $a_0$ or the average value:
+\begin{align*}
+a_0 &= \frac{1}{2L} \int_{-L}^L f(x) dx  \\
+    &= \frac{1}{2(1)} \int_0^{2} \frac{x}{2} dx \\
+    &= \frac{1}{4} \left. \frac{x^2}{2} \vphantom{\frac{1}{2}} \right|^2_0 \\
+    &= \frac{1}{2}
+\end{align*}
+
+Next we look at $a_n$...
+\begin{align*}
+a_n &= \frac{1}{L}  \int_{-L}^L f(x) \cos \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_0^2 \frac{x}{2} \cos \left( \frac{n\pi x}{(1)} \right) dx \\
+    &= \frac{1}{2} \int_0^2 x \cos \left( n\pi x \right) dx \\
+    &= \frac{1}{2} \left[ \frac{1}{n\pi} x \sin \left( n\pi x \right) - \frac{1}{n\pi} \int \sin \left( n\pi x \right) dx \right]^2_0 \\
+    &= \frac{1}{2} \left[ \frac{1}{n\pi} x \sin \left( n\pi x \right) + \frac{1}{n^2\pi^2} \cos \left( n\pi x \right) \right]^2_0 \\
+    &= \frac{1}{2} \left[ \frac{2n\pi \sin \left( 2n\pi \right) + \cos \left( 2n\pi \right)}{n^2\pi^2} - \frac{n\pi (0) \sin \left(0 \right) + \cos \left( 0 \right)}{n^2\pi^2} \right] \\
+    &= \frac{1}{2} \left[ \frac{1}{n^2\pi^2} - \frac{1}{n^2\pi^2} \right] \\
+    &= 0
+\end{align*}
+
+And finally $b_n$...
+\begin{align*}
+b_n &= \frac{1}{L} \int_{-L}^L f(x) \sin \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_0^2 \frac{x}{2} \sin \left( \frac{n\pi x}{(1)} \right) dx \\
+    &= \frac{1}{2} \int_0^2 x \sin \left( n\pi x \right) dx \\
+    &= \frac{1}{2} \left[ - \frac{1}{n\pi} x \cos \left( n\pi x \right) + \frac{1}{n\pi} \int \cos \left( n\pi x \right) dx \right]^2_0 \\
+    &= \frac{1}{2} \left[ - \frac{1}{n\pi} x \cos \left( n\pi x \right) + \frac{1}{n^2\pi^2} \sin \left( n\pi x \right) dx \right]^2_0 \\
+    &= \frac{1}{2} \left[ \frac{\sin (2n\pi) - \sin(0)}{ n^2\pi^2 } - \frac{2\cos(2n\pi) - 0 }{n\pi} \right] \\
+    &= \frac{1}{2} \left[ -\frac{2}{n\pi} \right] \\
+    &= - \frac{1}{n\pi}
+\end{align*}
+
+Therefore the final solution is:
+\[
+f(x) = \frac{1}{2} + \sum_{n=1}^\infty -\frac{1}{n\pi} \sin (n\pi x) = \frac{1}{2} - \frac{1}{\pi} \sum_{n=1}^\infty \sin (n\pi x)
+\]
+
+
+\fbox{\em \Large Parabolic Wave}
+
+The parabolic wave function can be defined over the interval $[-1, 1)$ as:
+\[
+\mathsf{Parabolic \ Wave}(x) = x^2 
+\]
+
+First we shall find $a_0$ since it is obvious that the average value is not zero:
+\begin{align*}
+a_0 &= \frac{1}{2L} \int_{-L}^L f(x) dx  \\
+    &= \frac{1}{2(1)} \int_{-1}^{1} x^2 dx \\
+    &= \frac{1}{2} \left. \frac{x^3}{3} \vphantom{\frac{1}{2}} \right|^1_{-1} \\
+    &= \frac{1}{2} \left( \frac{1}{3} - \frac{-1}{3} \right) \\
+    &= \frac{1}{3}
+\end{align*}
+
+Next we look at $a_n$...
+\begin{align*}
+a_n &= \frac{1}{L} \int_{-L}^L f(x) \cos \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_{-1}^1 x^2 \cos \left( \frac{n\pi x}{(1)} \right) dx \\
+    &= \int_{-1}^1 x^2 \cos \left( n\pi x \right) dx \\
+    &= \left[ \frac{1}{n\pi} x^2 \sin (n\pi x) - \int \frac{1}{n\pi} 2x \sin ( n\pi x ) dx \right]^1_{-1} \\
+    &= \left[ \frac{1}{n\pi} x^2 \sin (n\pi x) - \frac{2}{n\pi} \left( \frac{-1}{n\pi} x \cos (n\pi x) - \int \frac{-1}{n\pi} \cos (n\pi x) dx \right) \right]^1_{-1} \\
+    &= \left[ \frac{1}{n\pi} x^2 \sin (n\pi x) + \frac{2}{n^2\pi^2} x \cos (n\pi x) - \frac{2}{n^3\pi^3} \sin (n\pi x) \right]^1_{-1} \\
+    &= \left( \frac{1}{n\pi} \sin (n\pi) + \frac{2}{n^2\pi^2} \cos (n\pi) - \frac{2}{n^3\pi^3} \sin (n\pi) \right) - 
+       \left( \frac{1}{n\pi} \sin (-n\pi) - \frac{2}{n^2\pi^2} \cos (-n\pi) - \frac{2}{n^3\pi^3} \sin (-n\pi) \right)  \\
+\intertext{Note that $\sin(n\pi) = 0$\ and $\sin(-n\pi) = 0$; also since $\cos (x) = \cos(-x)$, then we have: }
+a_n &= \frac{4}{n^2\pi^2} \cos (n\pi) \\
+    &= \frac{4}{n^2\pi^2} \left\{ \vphantom{\frac{1}{1}} -1, 1, -1, 1, \ldots \right\} \\
+    &= \frac{4}{n^2\pi^2} (-1)^n
+\end{align*}
+
+And finally $b_n$...
+\begin{align*}
+b_n &= \frac{1}{L} \int_{-L}^L f(x) \sin \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_{-1}^1 x^2 \sin \left( \frac{n\pi x}{(1)} \right) dx \\
+    &= \int_{-1}^1 x^2 \sin ( n\pi x ) dx \\
+    &= \left[ \frac{-1}{n\pi} x^2 \cos (n\pi x) - \int \frac{-1}{n\pi} 2x \cos (n\pi x) dx \right]_{-1}^1 \\
+    &= \left[ \frac{-1}{n\pi} x^2 \cos (n\pi x) + \frac{2}{n\pi} \left( \frac{1}{n\pi} x \sin (n\pi x) - \int \frac{1}{n\pi} \sin (n\pi x) dx \right) \right]_{-1}^1 \\
+    &= \left[ \frac{-1}{n\pi} x^2 \cos (n\pi x) + \frac{2}{n^2\pi^2} x \sin (n\pi x) + \frac{1}{n^3\pi^3} \cos (n\pi x) \right]_{-1}^1 \\
+    &= \left( \frac{-1}{n\pi} \cos (n\pi) + \frac{2}{n^2\pi^2} \sin (n\pi) + \frac{1}{n^3\pi^3} \cos (n\pi) \right) - 
+       \left( \frac{-1}{n\pi} \cos (-n\pi) - \frac{2}{n^2\pi^2} \sin (-n\pi) + \frac{1}{n^3\pi^3} \cos (-n\pi) \right)  \\
+\intertext{Again $\sin (n\pi)$ and $\sin (-n\pi)$ is 0 for all $n$; also $\cos (x) = \cos(-x)$, so then:}
+    &= \frac{-1}{n\pi} \cos (n\pi) + 0 + \frac{1}{n^3\pi^3} \cos (n\pi) - \frac{-1}{n\pi} \cos (n\pi) - 0 - \frac{1}{n^3\pi^3} \cos (n\pi) \\
+    &= 0
+\end{align*}
+
+Therefore the final solution is:
+\[
+f(x) = \frac{1}{3} + \sum_{n = 1}^\infty \frac{4}{n^2\pi^2} (-1)^n \cos (n \pi x) 
+     = \frac{1}{3} + \frac{4}{\pi^2} \sum_{n = 1}^\infty \frac{-1^n}{n^2} \cos (n \pi x) 
+\]
+
+
+\fbox{\em \Large Triangle Wave}
+
+The triangle wave function can be defined over the interval $[-1, 1)$ as:
+\[
+\mathsf{Triangle\ Wave}(x) = \left\{ \begin{array}{ll} 
+                                          \hphantom{-}2x + 1 & -1 \leq x < 0 \\
+                                          -2x + 1 &  \hphantom{-}0 \leq x < 1
+                                       \end{array} \right.
+\]
+
+First we shall find $a_0$, even though it is obvious it is zero...
+\begin{align*}
+a_0 &= \frac{1}{2L} \int_{-L}^L f(x) dx  \\
+    &= \frac{1}{2(1)} \left( \int_{-1}^0 (2x + 1) dx + \int_0^1 (-2x + 1) dx \right) \\
+    &= \frac{1}{2} \left( \left[ x^2 + x \right]^0_{-1} + \left[ -x^2 + x \right]_0^1 \right) \\
+    &= \frac{1}{2} \left( (0 + 0) - (1 - 1) + (-1 + 1) - (0 + 0) \right) \\
+    &= 0
+\end{align*}
+
+Next we look at $a_n$...
+\begin{align*}
+a_n &= \frac{1}{L} \int_{-L}^L f(x) \cos \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_{-1}^1 \mathsf{Triangle\ Wave}(x) \cos \left( \frac{n\pi x}{(1)} \right) dx \\
+    &= \int_{-1}^0 (2x + 1) \cos ( n\pi x ) dx + \int_0^1 (-2x + 1) \cos ( n\pi x ) dx \\
+    &= \left[ 2\int_{-1}^0 x \cos ( n\pi x ) dx + \int_{-1}^0 \cos ( n\pi x ) dx \right] + 
+       \left[ -2\int_0^1 x \cos ( n\pi x ) dx + \int_0^1 \cos ( n\pi x ) dx \right] \\
+    &= \left. \frac{2(x\pi n \sin ( n\pi x ) + \cos ( n\pi x ))}{n^2\pi^2} \right|_{-1}^0 + \left. \frac{1}{n \pi} \sin ( n\pi x ) \right|_{-1}^0 
+       - \left. \frac{2(x\pi n \sin ( n\pi x ) + \cos ( n\pi x ))}{n^2\pi^2} \right|_0^1 + \left. \frac{1}{n \pi} \sin ( n\pi x ) \right|_0^1 \\
+\intertext{Recall that $\sin ( n\pi) = 0$, so then}
+   &= \frac{2(0 + \cos(0)) - 2(0 + \cos (-n\pi)) }{n^2\pi^2} + 0 - \frac{2(0 + \cos(n\pi)) - 2(0 + \cos (0)) }{n^2\pi^2} + 0 \\
+   &= \frac{2 - 2\cos (n\pi) }{n^2\pi^2} - \frac{2\cos(n\pi) - 2}{n^2\pi^2} \\
+   &= \frac{4}{n^2\pi^2} \left( 1 -  \cos (n\pi) \vphantom{\frac{1}{1}} \right) \\
+   &= \frac{4}{n^2\pi^2} \left\{ 2, 0, 2, 0, \ldots \vphantom{\frac{1}{1}} \right\} = \frac{8}{n^2\pi^2} \qquad \text{(When $n$ is odd)} 
+\end{align*}
+
+And finally $b_n$...
+\begin{align*}
+b_n &= \frac{1}{L} \int_{-L}^L f(x) \sin \left( \frac{n\pi x}{L} \right) dx \\
+    &= \frac{1}{(1)} \int_{-1}^1 \mathsf{Triangle\ Wave}(x) \sin \left( \frac{n\pi x}{(1)} \right) dx \\
+    &= \int_{-1}^0 (2x + 1) \sin ( n\pi x ) dx + \int_0^1 (-2x + 1) \sin ( n\pi x ) dx \\
+    &= \left[ 2\int_{-1}^0 x \sin ( n\pi x ) dx + \int_{-1}^0 \sin ( n\pi x ) dx \right] +
+       \left[ -2\int_0^1 x \sin ( n\pi x ) dx + \int_0^1 \sin ( n\pi x ) dx \right] \\
+    &= \left. \frac{2(\sin (n\pi x) - x n \pi \cos (n\pi x))}{n^2 \pi^2}\right|_{-1}^0 - \left. \frac{1}{n\pi} \sin (n\pi x) \right|_{-1}^0 - 
+       \left. \frac{2(\sin (n\pi x) - x n \pi \cos (n\pi x))}{n^2 \pi^2}\right|_0^1 - \left. \frac{1}{n\pi} \sin (n\pi x) \right|_0^1  \\
+    &= \frac{2(0 - 0) - 2(0 + n\pi \cos (n\pi)) }{n^2 \pi^2} - 0 - \frac{2(0 - n\pi \cos (n\pi)) - 2(0 - 0)}{n^2 \pi^2} - 0 \\
+    &= \frac{  -2(n\pi \cos (n\pi)) }{n^2 \pi^2}  + \frac{2(n\pi \cos (n\pi)) }{n^2 \pi^2} \\
+    &= 0
+\end{align*}
+
+Therefore the final solution is:
+\begin{align*}
+f(x) &=  \sum_{n \in \text{Odds}}^\infty \frac{8}{n^2\pi^2} \cos ( n\pi x )  \\
+     &= \frac{8}{\pi^2} \sum_{n \in \text{Odds}}^\infty \frac{ \cos ( n\pi x ) }{n^2} \\
+     &= \frac{8}{\pi^2} \sum_{n = 1}^\infty \frac{ \cos ( (2n - 1)\pi x ) }{(2n - 1)^2} 
+\end{align*}
+
+
+
+
+
+\end{document}
+
+
