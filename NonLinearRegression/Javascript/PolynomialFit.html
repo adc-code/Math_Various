@@ -136,10 +136,10 @@
                 stroke-width: 2;
             }
 
-            #equation
+            .solutionInfo
             {
                 background-color: #ddd;
-                padding:          15px;
+                padding:          10px;
                 font-family:      Helvetica, sans-serif;
                 font-size:        15px; 
                 text-align:       center;   
@@ -159,6 +159,7 @@
     <body>
        
         <div id='contents'>
+
             <div id='controls' class=' topRounding bottomRounding' style='float:left;background-color:#f2f2f2;padding:5px;margin-right:5px;margin-top:10px'>
 
                 <div class='button' id='ResetBtn'> Reset All </div>
@@ -181,8 +182,11 @@
 
             <div style='float: left'>
                 <div id='graph'> </div>
-                <div id='equation'>Solution: - </div>
+                <div class='solutionInfo' id='equation'>Solution: - </div>
+                <div style='height:2px'> </div>
+                <div class='solutionInfo' id='rsquared'>R<sup>2</sup>: - </div>
             </div>
+
         </div> 
 
     </body>

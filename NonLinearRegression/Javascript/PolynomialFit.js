@@ -3,7 +3,7 @@ function D3App ()
     // SVG Width, height, and some added spacing
     var margin = { top: 10, right: 30, bottom: 20, left: 40 };
     var width  = 550 - margin.left - margin.right;
-    var height = 550 - margin.top  - margin.bottom;
+    var height = 510 - margin.top  - margin.bottom;
 
     var snapToInt  = false;
     var visCurve   = false;
@@ -231,6 +231,30 @@ function D3App ()
  
             d3.select ('#equation')
               .html (eqnStr);
+
+            var SSE = 0;
+            var meanY = 0;
+            for (var i = 0; i < pointList.length; i++)
+            {   
+                var yValue = 0; 
+                for (var j = 0; j < coefs.length; j++)
+                    yValue += coefs[j] * math.pow (xScale.invert(pointList[i][0]), j);
+                SSE   += (yScale.invert(pointList[i][1]) - yValue) ** 2;
+                meanY += yValue;
+            }
+
+            meanY /= pointList.length;
+
+            var SST = 0;
+            for (var i = 0; i < pointList.length; i++)
+            {   
+                SST += (yScale.invert(pointList[i][1]) - meanY) ** 2;
+            }
+
+            var Rsqr = 1 - SSE / SST;
+
+            d3.select ('#rsquared')
+              .html ('R<sup>2</sup>: ' + Rsqr);
         }
     }
 
