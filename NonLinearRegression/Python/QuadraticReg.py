@@ -76,4 +76,22 @@ if __name__ == "__main__":
 
 
 
+    SSE = 0
+    meanY = 0
+    for point in points:
+        yValue = coefs.item(0)*point[0]**2 + coefs.item(1)*point[0] + coefs.item(2)
+        SSE   += (point[1] - yValue) ** 2
+        meanY += yValue
+
+    meanY /= len(points)
+
+    SST = 0
+    for point in points:
+        SST += (point[1] - meanY) ** 2
+
+    Rsqr = 1 - SSE / SST
+
+    print ('R Squared -> ', Rsqr)
+
+
 
