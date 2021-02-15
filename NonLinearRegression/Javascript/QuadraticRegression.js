@@ -315,9 +315,12 @@ function D3App ()
         svg.select ('#solutionLine')
            .style ('opacity', 0);
 
-        // remove equation
+        // remove equation and R-squared
         d3.select ('#equation')
           .html ('Solution: -'); 
+
+        d3.select ('#rsquared')
+          .html ('R<sup>2</sup>: -');
 
     } );
 
