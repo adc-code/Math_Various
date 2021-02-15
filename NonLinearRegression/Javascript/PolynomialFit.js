@@ -5,9 +5,10 @@ function D3App ()
     var width  = 550 - margin.left - margin.right;
     var height = 550 - margin.top  - margin.bottom;
 
-    var snapToInt = false;
-    var visCurve  = false;
-    var pointList = [];
+    var snapToInt  = false;
+    var visCurve   = false;
+    var numDegrees = 3
+    var pointList  = [];
 
     // Create SVG element
     var svg = d3.select ('#graph')
@@ -122,7 +123,7 @@ function D3App ()
                      .attr ('d', solutionLine)
                      .attr ('clip-path', 'url(#graphArea)')
                      .style ('opacity', 0)
-                     .style ('stroke', '#00aabb'); 
+                     .style ('stroke', '#6600cc'); 
 
     /* uncomment to have line 'drawn' on
           
@@ -156,57 +157,80 @@ function D3App ()
     function ComputeCurve ()
     {
         // only if we have at least three points... otherwise the solution is total garbage
-        if (pointList.length > 2)
+        if (pointList.length > numDegrees)
         {
-            var sum_x4 = 0;
-            var sum_x3 = 0;
-            var sum_x2 = 0;
-            var sum_x  = 0;
-
-            var sum_x2y = 0;
-            var sum_xy  = 0;
-            var sum_y   = 0;
+            var X = [];
+            var Y = [];
 
             for (var i = 0; i < pointList.length; i++)
             {
-                sum_x4 += math.pow (xScale.invert (pointList[i][0]), 4);
-                sum_x3 += math.pow (xScale.invert (pointList[i][0]), 3);
-                sum_x2 += math.pow (xScale.invert (pointList[i][0]), 2);
-                sum_x  += xScale.invert (pointList[i][0]);
+                var row = [];
+                for (var m = 0; m <= numDegrees; m++)
+                {
+                    if (m == 0)
+                        row.push (1);
+                    else
+                        row.push (math.pow (xScale.invert (pointList[i][0]), m));
+                }
 
-                sum_x2y += yScale.invert (pointList[i][1]) * math.pow (xScale.invert (pointList[i][0]), 2);
-                sum_xy  += yScale.invert (pointList[i][1]) * xScale.invert (pointList[i][0]);
-                sum_y   += yScale.invert (pointList[i][1]);
+                X.push (row);
+                Y.push (yScale.invert (pointList[i][1]));
             }
 
-            var A = math.matrix ( [ [ sum_x4, sum_x3, sum_x2 ], 
-                                    [ sum_x3, sum_x2, sum_x  ], 
-                                    [ sum_x2, sum_x,  pointList.length ] ] );
- 
-            var B = math.matrix ( [ sum_x2y, sum_xy, sum_y ] );
+            var xMat = math.matrix ( X );
+            var yMat = math.matrix ( Y );
 
-            var Ainv = math.inv (A);
+            var xMatTrans = math.transpose (xMat);
 
-            var results = math.multiply (B, Ainv);
+            var tmpMat = math.multiply (xMatTrans, xMat);
+            tmpMat = math.inv (tmpMat); 
+            var solMat = math.multiply (tmpMat, xMatTrans);
 
-            // find the coefficent
-            var a = results._data[0];
-            var b = results._data[1];
-            var c = results._data[2];
+            var results = math.multiply (solMat, Y);
+
+            var coefs = [];
+            for (var i = 0; i < results._data.length; i++) 
+                coefs.push (results._data[i]);
+
+            // console.log (coefs);
 
             // recompute the curve
             var locData = [];
-            for (var i = xScale.domain()[0]; i <= xScale.domain()[1]; i+=0.5)
-                locData.push ( { x: xScale(i), y: yScale (a*i*i + b*i + c) } );
-   
+            for (var i = xScale.domain()[0]; i <= xScale.domain()[1]; i+=0.2)
+            {
+                var yValue = 0;
+                for (var j = 0; j < coefs.length; j++)
+                {
+                    yValue += coefs[j] * math.pow (i, j);
+                }
+
+                locData.push ( { x: xScale(i), y: yScale (yValue) } );
+            }   
+
+            // console.log (locData);
+
             // redraw the curve
             svg.select ('#solutionLine')
                .style ('opacity', 1)
                .attr ('d', solutionLine (locData));
 
             // update the equation 
+            var eqnStr = 'Solution: ';
+            for (var j = coefs.length-1; j > 0; j--)
+            {
+                var value = coefs[j].toFixed(4).toString();
+                if (math.abs(coefs[j]) < 0.0001)
+                   value = coefs[j].toExponential(3).toString();
+ 
+                if (j != 1)
+                    eqnStr += '(' + value + ') x<sup>' + j + '</sup> + ';
+                else
+                    eqnStr += '(' + value + ') x + ';
+            }
+            eqnStr += '(' + coefs[0].toFixed(4).toString() + ')'; 
+ 
             d3.select ('#equation')
-              .html ('Solution: (' + a.toFixed(4) + ') x<sup>2</sup> + (' + b.toFixed(4) + ') x + (' + c.toFixed(4) + ')'); 
+              .html (eqnStr);
         }
     }
 
@@ -264,7 +288,7 @@ function D3App ()
     d3.select ('#SnapToIntBtn').on ('click', function ()
     {
         snapToInt = !snapToInt;
-        //console.log (snapToInt);
+        console.log (snapToInt);
 
         if (snapToInt)
         {
@@ -297,6 +321,18 @@ function D3App ()
         d3.select ('#equation')
           .html ('Solution: -'); 
 
+    } );
+
+
+    //
+    // callback for the degrees slider 
+    // 
+    d3.select ('#sliderDegrees').on ('input', function() 
+    {
+        numDegrees = +d3.select(this).node().value;
+        d3.select ('#degreesOutput').text ( numDegrees ); 
+
+        ComputeCurve ();              
     } );
 
 
