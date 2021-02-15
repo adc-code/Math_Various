@@ -1,3 +1,6 @@
+//
+// ComputeCorners: compute the positions of the corners...
+//
 function ComputeCorners (iNumCorners, iOffsetAngle, iLength)
 {
     var corners = [];
@@ -5,7 +8,7 @@ function ComputeCorners (iNumCorners, iOffsetAngle, iLength)
     for (var i = 0; i < iNumCorners; i++)
     {
         // compute the angles (in radians) of the corner points
-        var angle = iOffsetAngle + i * (360 / numCorners);
+        var angle = iOffsetAngle + i * (360 / iNumCorners);
         angle *= Math.PI / 180;
    
         var xLoc = Math.round (iLength * Math.cos (angle));
