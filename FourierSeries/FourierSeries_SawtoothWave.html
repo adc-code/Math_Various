@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Fourier Series (Sawtooth Wave)</title>
+
+        <script type="text/javascript" src="d3.v5.js"></script>
+        <script type="text/javascript" src="FourierSeries_SawtoothWave.js"></script> 
+        <script type="text/javascript" src="FourierSeries_UI.js"></script>       
+
+        <script type='text/javascript'>
+
+            // Add a wide left margin so that the contents seem centered
+            function CenterContents ()
+            {
+                var leftMargin = (window.innerWidth - 865) / 2;
+                if (leftMargin > 0)
+                {
+                    var contents = document.getElementById ('contents');
+                    contents.style.marginLeft = leftMargin + 'px';
+                }
+            }
+
+            // Also re-center the contents when the page was resized...
+            window.addEventListener ('resize', CenterContents);
+
+            //
+            // eventWindowLoaded: used to be sure that everything has been loaded first 
+            // 
+            window.addEventListener ('load', eventWindowLoaded, false);     
+            function eventWindowLoaded ()
+            {
+                CenterContents ();
+                D3App ();
+            }
+
+        </script> 
+
+        <style>
+              .button
+                 {
+                    background-color: #cccccc;
+                    width:            140px;
+                    padding:          4px;
+                    margin:           2px;
+                    margin-right:     0px;
+                    cursor:           pointer;
+                    font-family:      Helvetica, sans-serif;
+                    font-size:        12px;
+                    color:            #000000;
+                    text-align:       center;
+                    border-radius:    5px;
+                    border-width:     thin;
+                    border-style:     solid;
+                    border-color:     #000000;
+                 }
+
+              .topRounding
+                {
+                    border-top-left-radius:5px;
+                    border-top-right-radius:5px;
+                    border-top-width: thin;
+                    border-top-color: #000;
+                    border-top-style: solid;
+                    border-left-width: thin;
+                    border-left-color: #000;
+                    border-left-style: solid;
+                    border-right-width: thin;
+                    border-right-color: #000;
+                    border-right-style: solid;
+                    margin-bottom: 0px;
+                }
+
+              .bottomRounding
+                {
+                    border-bottom-left-radius:5px;
+                    border-bottom-right-radius:5px;
+                    border-bottom-width: thin;
+                    border-bottom-color: #000;
+                    border-bottom-style: solid;
+                    border-left-width: thin;
+                    border-left-color: #000;
+                    border-left-style: solid;
+                    border-right-width: thin;
+                    border-right-color: #000;
+                    border-right-style: solid;
+                    margin-top: 0px;
+                }
+
+              .grid line
+                {
+                    stroke: lightgrey;
+                    opacity: 0.7;
+                }
+
+              .grid path
+                {
+                    stroke-width: 0;
+                }
+
+              .lineOriginal
+                {
+                   fill: none;
+                   stroke: #000099;
+                   stroke-width: 2;
+                }
+
+              .lineApprox
+                {
+                   fill: none;
+                   stroke: #dd0000;
+                   stroke-width: 2;
+                }
+
+        </style>
+
+    </head>
+
+    <body>
+       
+        <div id='contents'>
+
+            <div id='controls' class=' topRounding bottomRounding' style='float:left;background-color:#f2f2f2;padding:5px;margin-right:5px'>
+
+                <div class='button' id='OrgFuncBtn' type='0' curveNum='0'> Original Function </div>
+
+                <div style='height:5px'> </div>
+
+                <div class='button' id='TermConstBtn'  type='1' curveNum='0'> Constant Term (n = 0) </div>
+                <div class='button' id='TermFirstBtn'  type='1' curveNum='1'> First Term (n = 1)    </div>
+                <div class='button' id='TermSecondBtn' type='1' curveNum='2'> Second Term (n = 2)   </div>
+                <div class='button' id='TermThirdBtn'  type='1' curveNum='3'> Third Term (n = 3)    </div>
+                <div class='button' id='TermFourthBtn' type='1' curveNum='4'> Fourth Term (n = 4)   </div>
+
+                <div style='height:5px'> </div>
+
+                <div class='button' id='ApproxFirst1Btn'  type='2' curveNum='0'> Sum of first Terms  </div>
+                <div class='button' id='ApproxFirst2Btn'  type='2' curveNum='1'> Sum of first 2 Terms  </div>
+                <div class='button' id='ApproxFirst3Btn'  type='2' curveNum='2'> Sum of first 3 Terms  </div>
+                <div class='button' id='ApproxFirst4Btn'  type='2' curveNum='3'> Sum of first 4 Terms  </div>
+                <div class='button' id='ApproxFirst5Btn'  type='2' curveNum='4'> Sum of first 5 Terms  </div>
+                <div class='button' id='ApproxFirst10Btn' type='2' curveNum='5'> Sum of first 10 Terms </div>
+                <div class='button' id='ApproxFirst20Btn' type='2' curveNum='6'> Sum of first 20 Terms </div>
+   
+            </div>
+
+            <div style='float: left'>
+                <div id='graph'> </div>
+            </div>
+
+        </div> 
+
+    </body>
+
+</html>
+
+
