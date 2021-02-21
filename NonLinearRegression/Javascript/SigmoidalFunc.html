@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Sigmoidal Function</title>
+
+        <script type="text/javascript" src="d3.v5.js"></script>
+        <script type="text/javascript" src="math.js"></script> 
+
+        <script type="text/javascript" src="SigmoidalFunc.js"></script> 
+
+        <script type="text/javascript">
+
+            // Add a wide left margin so that the table seems centered
+            var CenterGraph = function ()
+            {
+                var leftMargin = (window.innerWidth - 660) / 2;
+                d3.select ('#contents').style ('margin-left', leftMargin + 'px');
+            }
+
+            // Also re-center the table when the page was resized...
+            d3.select(window).on ('resize', function () { CenterGraph (); } );
+
+            // eventWindowLoaded: used to be sure that everything has been loaded first 
+            window.addEventListener ('load', eventWindowLoaded, false);     
+            function eventWindowLoaded ()
+            {
+                CenterGraph ();
+                D3App ();
+            } 
+
+        </script>
+
+        <style>
+
+            .button
+            {
+                background-color: #cccccc;
+                width:            140px;
+                padding:          4px;
+                margin:           2px;
+                margin-right:     0px;
+                cursor:           pointer;
+                font-family:      Helvetica, sans-serif;
+                font-size:        12px;
+                color:            #000000;
+                text-align:       center;
+                border-radius:    5px;
+                border-width:     thin;
+                border-style:     solid;
+                border-color:     #000000;
+            }
+
+            .dataInput 
+            {
+                background-color: #cccccc;
+                color:            #000;
+                padding:          4px;
+                margin:           2px;
+                margin-right:     0px;
+                border-radius:    5px;
+                border-width:     thin;
+                border-style:     solid;
+                border-color:     #000;
+                height:           40px; 
+            }
+
+            .label
+            {
+                font-family:      Helvetica, sans-serif;
+                font-size:        12px;
+                padding-top:      3px;
+            } 
+
+            .topRounding
+            {
+                border-top-left-radius:  5px;
+                border-top-right-radius: 5px;
+                border-top-width:        thin;
+                border-top-color:        #000;
+                border-top-style:        solid;
+                border-left-width:       thin;
+                border-left-color:       #000;
+                border-left-style:       solid;
+                border-right-width:      thin;
+                border-right-color:      #000;
+                border-right-style:      solid;
+                margin-bottom:           0px;
+            }
+
+            .bottomRounding
+            {
+                border-bottom-left-radius:  5px;
+                border-bottom-right-radius: 5px;
+                border-bottom-width:        thin;
+                border-bottom-color:        #000;
+                border-bottom-style:        solid;
+                border-left-width:          thin;
+                border-left-color:          #000;
+                border-left-style:          solid;
+                border-right-width:         thin;
+                border-right-color:         #000;
+                border-right-style:         solid;
+                margin-top:                 0px;
+            }
+
+            .grid line
+            {
+                stroke:  lightgrey;
+                opacity: 0.7;
+            }
+
+            .grid path
+            {
+                stroke-width: 0;
+            }
+
+            .queryLine
+            {
+                color:            #333333;
+                stroke:           #333333;
+                stroke-dasharray: 2, 3;
+            }
+
+            .point
+            {
+                stroke:    #000000;
+            }
+
+            .solutionLine
+            {
+                fill:         none;
+                stroke:       #666699;
+                stroke-width: 2;
+            }
+
+            .solutionInfo
+            {
+                background-color: #ddd;
+                padding:          5px;
+                font-family:      Helvetica, sans-serif;
+                font-size:        12px; 
+                text-align:       center;   
+                border-radius:    2px;
+                border-width:     thin;
+                border-style:     solid;
+                border-color:     #000000;
+                margin-left:      40px;
+                margin-right:     30px; 
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+       
+        <div id='contents'>
+
+            <div id='controls' class=' topRounding bottomRounding' style='float:left;background-color:#f2f2f2;padding:5px;margin-right:5px;margin-top:10px'>
+
+                <div class='dataInput'> 
+                    <div>
+                        <div class='label' style='float:left;margin-left:3px'>Weight (<i>w</i>): </div>
+                        <output id='weightOutput' class='label' style='width:25px;float:right;text-align:right;margin-right:2px'>1</output> 
+                    </div>
+                    <input id='sliderWeight' style='width:130px' type='range' min='-5' max='5' step='0.01' value='1'/>
+                </div>
+
+                <div style='height:2px'></div>
+
+                <div class='dataInput'> 
+                    <div>
+                        <div class='label' style='float:left;margin-left:3px'>Bias (<i>b</i>): </div>
+                        <output id='biasOutput' class='label' style='width:25px;float:right;text-align:right;margin-right:2px'>0</output> 
+                    </div>
+                    <input id='sliderBias' style='width:130px' type='range' min='-10' max='10' step='0.01' value='0'/>
+                </div>
+
+            </div>
+
+            <div style='float: left'>
+                <div id='graph'> </div>
+            </div>
+
+        </div> 
+
+    </body>
+
+</html>
+
+
