@@ -2,8 +2,8 @@ function D3App ()
 {  
     // SVG Width, height, and some added spacing
     var margin = { top: 10, right: 30, bottom: 20, left: 40 };
-    var width  = 550 - margin.left - margin.right;
-    var height = 510 - margin.top  - margin.bottom;
+    var width  = 480 - margin.left - margin.right;
+    var height = 480 - margin.top  - margin.bottom;
 
     var snapToInt = false;
     var visCurve  = false;
@@ -92,13 +92,13 @@ function D3App ()
 
     // Add the query lines to the svg
     svg.append ('path')
-       .datum ( [ {x: xScale.domain()[0], y: yScale(0)}, {x: xScale.domain()[1], y: yScale(0)} ] )
+       .datum ( [ {x: xScale.range()[0], y: yScale(0)}, {x: xScale.range()[1], y: yScale(0)} ] )
        .attr ('class', 'queryLine') 
        .attr ('id', 'horizLine')
        .attr ('d', horizLine);
 
     svg.append ('path')
-       .datum ( [ {x: xScale(0), y: yScale.domain()[0]}, {x: xScale(0), y: yScale.domain()[1]} ] )
+       .datum ( [ {x: xScale(0), y: yScale.range()[0]}, {x: xScale(0), y: yScale.range()[1]} ] )
        .attr ('class', 'queryLine') 
        .attr ('id', 'vertLine')
        .attr ('d', vertLine);
