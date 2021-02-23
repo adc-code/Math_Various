@@ -124,6 +124,18 @@
                 stroke-dasharray: 2, 3;
             }
 
+            .pointLine
+            {
+                stroke:           #bfbfbf;
+                stroke-width:     2px;
+            }
+
+            .pointLineSel
+            {
+                stroke:           #e62e00;
+                stroke-width:     3px;
+            }
+
             .point
             {
                 stroke:    #000000;
@@ -159,7 +171,15 @@
        
         <div id='contents'>
 
-            <div id='controls' class=' topRounding bottomRounding' style='float:left;background-color:#f2f2f2;padding:5px;margin-right:5px;margin-top:10px'>
+             
+
+             <div id='controls' class=' topRounding bottomRounding' style='float:left;background-color:#f2f2f2;padding:5px;margin-right:5px;margin-top:10px'>
+
+                <div class='button' id='RemoveBtn'> Remove Points </div>
+                <div style='height:1px'> </div>
+                <div class='button' id='SnapToIntBtn'> Snap to Integer </div>
+
+                <div style='height:10px'> </div>
 
                 <div class='dataInput'> 
                     <div>
@@ -168,9 +188,7 @@
                     </div>
                     <input id='sliderWeight' style='width:130px' type='range' min='-5' max='5' step='0.01' value='1'/>
                 </div>
-
-                <div style='height:2px'></div>
-
+                <div style='height:1px'></div>
                 <div class='dataInput'> 
                     <div>
                         <div class='label' style='float:left;margin-left:3px'>Bias (<i>b</i>): </div>
