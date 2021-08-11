@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Looking at the Lorenz Attractor</title>
+
+        <style>
+            body { margin: 0; }
+
+            .label
+            {
+                font-family:      Helvetica, sans-serif;
+                font-size:        12px;
+                padding-top:      3px;
+                padding-left:     3px;
+            }
+
+            .inputBox
+            {
+                border-width:     thin;
+                border-color:     #000;
+                border-style:     solid;
+                border-radius:    5px;
+                margin-top:       0px;
+                margin-bottom:    0px; 
+
+                background-color: #ddd;
+                width:            190px;
+            }
+        </style>
+
+        <script src="three.js"></script>
+        <script src="LorenzEquations_DiffEq.js"></script>
+        <script src="LorenzEquations_UI.js"></script>
+        <script src="LorenzEquations.js"></script>
+
+        <script>
+
+            window.addEventListener ('load', function()
+            {
+                // Set the callbacks...
+                document.getElementById ('rhoValueList').addEventListener ('change', OnRhoValueListCB);
+                document.getElementById ('showCriticalPntsChkBox').addEventListener ('click', OnShowCriticalPntsChkBoxCB);
+                document.getElementById ('curveLengthList').addEventListener ('change', OnCurveLengthListCB);
+                document.getElementById ('compRateList').addEventListener ('change', OnCompRateListCB);
+                document.getElementById ('compRateList').addEventListener ('input', OnCompRateListCB);
+                document.getElementById ('rotSpeedSlider').addEventListener ('change', OnRotSpeedSliderCB);
+                document.getElementById ('rotSpeedSlider').addEventListener ('input', OnRotSpeedSliderCB);
+
+                // Initialize... Make the 3D elements
+                init ();
+
+                // Animate... start the animation
+                animate ();
+            });
+
+        </script>
+
+    </head>
+
+    <body>
+
+        <div id='contents'>
+
+            <div id='controls' style='float:left;margin-right:7px;margin-left:3px'>
+
+                <div class='inputBox' style='height:105px;padding-top:3px'>
+                   <div class='label' style='float: left'>Parameters: </div>
+
+                   <div class='label' style='float:left;padding-top:10px'>
+                     <span style='margin-left:10px;margin-top:10px'>&sigma; = 10</span>  
+                     <span style='margin-left:5px;'>&beta; = 8/3</span> 
+                     <span style='margin-left:5px;margin-right:3px'>&rho; = </span> 
+                     <select class='label' id='rhoValueList' name='rhoValueList' style='width:60px;float:right;padding-top:0px'>
+                         <option value='0'> 0.5 </option>
+                         <option value='1'> 13  </option>
+                         <option value='2'> 22.3 </option>
+                         <option value='3' selected> 28 </option>
+                         <option value='4'> 99.65 </option>
+                         <option value='5'> 100.75 </option>
+                     </select>
+                   </div>
+                   <div class='label' style='float:left;padding-top:7px'>
+                         <span style='margin-left:10px'>&rarr;</span> <span>Initial Position:</span>
+                         <span id='initPosText' style='margin-left:2px'>(1, 0, 0)</span>
+                   </div>
+                   <div class='label' style='float:left;padding-top:5px'>
+                         <span style='margin-left:10px;float:left'>&rarr;</span>
+                         <div id='noteText' style='width:140px;float:left;padding-left:3px'>Lorenz Attractor </div>
+                   </div>
+                </div> 
+
+                <div style='height:3pt'></div>
+
+                <div class='inputBox' style='height:20px'>
+                    <div class='label' style='float:left'>Show Critical Points: </div>
+                    <input type='checkbox' id='showCriticalPntsChkBox' style='float:right;margin-right:5px'>
+                </div>
+
+                <div style='height:3pt'></div>
+
+                <div class='inputBox' style='height:40px;padding-top:3px'>
+                    <div class='label' style='float:left'>Rotation Speed: </div>
+                    <output id='rotSpeedOutput' class='label' style='width:30px;float:right;text-align:center;'>3</output> 
+                    <input id='rotSpeedSlider' style='width:175px' type='range' min='-10' max='10' step='1' value='3'/> 
+                </div>
+
+                <div style='height:3pt'></div>
+
+                <div class='inputBox' style='height:25px;padding-top:3px'>
+                    <div class='label' style='float:left'>Computation Rate: </div>
+                    <select class='label' id='compRateList' name='compRateList' style='width:70px;float:right;margin-right:3px'>
+                        <option value='-5'> 5 frames per step </option>
+                        <option value='-2'> 2 frames per step </option>
+                        <option value='1' selected> 1 step per frame</option>
+                        <option value='2'> 2 steps per frame</option>
+                        <option value='5'> 5 steps per frame</option>
+                    </select>
+                </div>
+
+                <div style='height:3pt'></div>
+
+                <div class='inputBox' style='height:25px;padding-top:3px'>
+                    <div class='label' style='float:left'>Curve Length: </div>
+                    <select class='label' id='curveLengthList' name='curveLengthList' style='width:70px;float:right;margin-right:3px'>
+                        <option value='25'> 25 </option>
+                        <option value='100'> 100 </option>
+                        <option value='1000'> 1000 </option>
+                        <option value='2000' selected> 2000 </option>
+                        <option value='5000'> 5000 </option>
+                        <option value='10000'> 10000 </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div style='float:left; position:relative;display:inline-block;border-width:thin;border-color:#000;border-style:solid'>
+                <div id='drawingArea'>
+                </div>
+            </div>
+                
+        </div>
+
+    </body>
+</html>
+
