@@ -38,8 +38,24 @@
 
         <script>
 
+            // Add a wide left margin so that the contents seem centered
+            function CenterContents ()
+            {
+                var leftMargin = (window.innerWidth - 650) / 2;
+                if (leftMargin > 0)
+                {
+                    var contents = document.getElementById ('contents');
+                    contents.style.marginLeft = leftMargin + 'px';
+                }
+            }
+
+            // Also re-center the contents when the page was resized...
+            window.addEventListener ('resize', CenterContents);
+
             window.addEventListener ('load', function()
             {
+                CenterContents ();
+
                 // Set the callbacks...
                 document.getElementById ('rhoValueList').addEventListener ('change', OnRhoValueListCB);
                 document.getElementById ('showCriticalPntsChkBox').addEventListener ('click', OnShowCriticalPntsChkBoxCB);
@@ -63,6 +79,8 @@
     <body>
 
         <div id='contents'>
+
+            <div style='height:3pt'></div>
 
             <div id='controls' style='float:left;margin-right:7px;margin-left:3px'>
 

@@ -86,3 +86,38 @@ function UpdateSolution ()
 }
 
 
+//
+// UpdateSolutionList: compute the next step in the Lorenz equation and update the 
+//                     history of points... list version
+//
+function UpdateSolutionList ()
+{
+    // console.log ('UpdateSolutionList');
+    // Solve (or more precisely, numerically integrate) the Lorenz equations...
+
+    for (var i = 0; i < _nNumInitPoints; i++)
+    {
+        var simStepResults = RK4_step ( [ _dCurrX[i], _dCurrY[i], _dCurrZ[i] ] );
+
+        // Update the current position
+        _dCurrX[i] += simStepResults [0];
+        _dCurrY[i] += simStepResults [1];
+        _dCurrZ[i] += simStepResults [2];
+
+        // Update the history or list of points
+        _xValues[i].push ( _dCurrX[i] );
+        _yValues[i].push ( _dCurrY[i] );
+        _zValues[i].push ( _dCurrZ[i] );
+
+        // Drop the first elements from the list.  Note that since the max curve length
+        // can change, it is done in a list.
+        while (_xValues[i].length > _nMaxCurveLength)
+        {
+            _xValues[i].shift ();
+            _yValues[i].shift ();
+            _zValues[i].shift ();
+        }
+    }
+}
+
+
